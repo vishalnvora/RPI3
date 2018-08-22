@@ -1,6 +1,6 @@
 # RPI3
 # DRIVERS FOR RPI3
-# Since you are trying to install the windows 10 without having the correct drivers(perhaps).
+# Since you are trying to install the windows 10 without having correct drivers(perhaps).
 Please check your RPi3  If it has BCM2837 than perhaps you may see the second chipset near to that "SMSC LAN 9514-JZX"
 This one uses the drivers I have uploaded here.
 

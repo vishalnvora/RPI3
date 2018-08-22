@@ -1,0 +1,489 @@
+;-------------------------------------------------------------------------------
+; net9500-x86-n620f.inf
+;
+; SMSC LAN9500 USB to Ethernet Adapter installation script for x86.
+;
+; Copyright (c) SMSC.  All rights reserved.
+
+[version]
+Signature   = "$Windows NT$"
+ClassGUID   = {4d36e972-e325-11ce-bfc1-08002be10318}
+Class       = Net
+Provider    = %V_SMSC%
+DriverPackageDisplayName = %LAN9500.PackageDesc.ntx86%
+CatalogFile = lan9500-x86-n620f.cat
+DriverVer   = 10/19/2012,2.6.0.7
+
+[ControlFlags]
+ExcludeFromSelect = USB\VID_0424&PID_9500   ; LAN9500 with default LEDs.
+ExcludeFromSelect = USB\VID_0424&PID_9505   ; LAN9505 with default LEDs.
+ExcludeFromSelect = USB\VID_0424&PID_9E00   ; LAN9500A with default LEDs.
+ExcludeFromSelect = USB\VID_0424&PID_9E01   ; LAN9505A with default LEDs.
+ExcludeFromSelect = USB\VID_0424&PID_EC00   ; LAN9512/LAN9514 with default LEDs.
+ExcludeFromSelect = USB\VID_0424&PID_9900   ; LAN9500 with separate (SW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9901   ; LAN9505 with separate (SW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9902   ; LAN9500A with separate (SW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9903   ; LAN9505A with separate (SW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9904   ; LAN9512/LAN9514 with separate (SW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9905   ; LAN9500A with separate (HW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9906   ; LAN9505A with separate (HW driven) Link/Act LEDs
+ExcludeFromSelect = USB\VID_0424&PID_9E08   ; Auto Thera
+ExcludeFromSelect = USB\VID_0424&PID_9E09   ; 
+ExcludeFromSelect = USB\VID_0424&PID_9530   ; 
+ExcludeFromSelect = USB\VID_0424&PID_9535   ; 
+ExcludeFromSelect = USB\VID_0424&PID_9730   ; 
+ExcludeFromSelect = USB\VID_0424&PID_9735   ; 
+
+[Manufacturer]
+%V_SMSC%=SMSC,ntx86
+
+[SMSC.ntx86]
+%LAN9500.DeviceDesc%    = LAN9500.ndi.ntx86, USB\VID_0424&PID_9500
+%LAN9505.DeviceDesc%    = LAN9500.ndi.ntx86, USB\VID_0424&PID_9505
+%LAN9E00.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9E00
+%LAN9E01.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9E01
+%LANEC00.DeviceDesc%    = LAN9500.ndi.ntx86, USB\VID_0424&PID_EC00          
+%LAN9900.DeviceDesc%    = LAN9500-SAL10.ndi.ntx86, USB\VID_0424&PID_9900
+%LAN9901.DeviceDesc%    = LAN9500-SAL10.ndi.ntx86, USB\VID_0424&PID_9901
+%LAN9902.DeviceDesc%    = LAN9500A-SAL10.ndi.ntx86, USB\VID_0424&PID_9902
+%LAN9903.DeviceDesc%    = LAN9500A-SAL10.ndi.ntx86, USB\VID_0424&PID_9903
+%LAN9904.DeviceDesc%    = LAN9500-SAL10.ndi.ntx86, USB\VID_0424&PID_9904
+%LAN9905.DeviceDesc%    = LAN9500A-HAL.ndi.ntx86, USB\VID_0424&PID_9905
+%LAN9906.DeviceDesc%    = LAN9500A-HAL.ndi.ntx86, USB\VID_0424&PID_9906
+%LAN9E08.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9E08
+%LAN9E09.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9E09
+%LAN9530.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9530
+%LAN9535.DeviceDesc%    = LAN9500A.ndi.ntx86, USB\VID_0424&PID_9535
+%LAN9730.DeviceDesc%    = LAN9730.ndi.ntx86, USB\VID_0424&PID_9730
+%LAN9735.DeviceDesc%    = LAN9730.ndi.ntx86, USB\VID_0424&PID_9735
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9500 USB 2.0 to Ethernet 10/100 Adapter
+;
+[LAN9500.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500.ndi.reg, LAN9500.params.reg, LAN9500Gen1st.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9500.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9500A USB 2.0 to Ethernet 10/100 Adapter
+;
+[LAN9500A.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500.ndi.reg, LAN9500.params.reg, LAN9500A.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9500A.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9500 USB 2.0 to Ethernet 10/100 Adapter (SAL10)
+;
+[LAN9500-SAL10.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500-SAL10.ndi.reg, LAN9500.params.reg, LAN9500Gen1st.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9500-SAL10.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9500A USB 2.0 to Ethernet 10/100 Adapter (SAL10)
+;
+[LAN9500A-SAL10.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500-SAL10.ndi.reg, LAN9500.params.reg, LAN9500A.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9500A-SAL10.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9500 USB 2.0 to Ethernet 10/100 Adapter (HAL)
+;
+[LAN9500A-HAL.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500A-HAL.ndi.reg, LAN9500.params.reg, LAN9500A.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9500A-HAL.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-------------------------------------------------------------------------------
+; SMSC LAN9730 USB 2.0 to Ethernet 10/100 Adapter
+;
+[LAN9730.ndi.ntx86]
+*IfType         = 6                     ; IF_TYPE_ETHERNET_CSMACD 
+*MediaType      = 0                     ; NdisMedium802_3
+*PhysicalMediaType = 14                 ; NdisPhysicalMedium802_3
+Characteristics = 0x84                  ; NCF_HAS_UI | NCF_PHYSICAL
+BusType         = 15
+AddReg          = LAN9500.ndi.reg, LAN9500.params.reg, LAN9730.params.reg
+CopyFiles       = LAN9500.CopyFiles.ntx86
+
+[LAN9730.ndi.ntx86.Services]
+AddService      = LAN9500, 2, LAN9500.Service.ntx86, LAN9500.EventLog.ntx86
+
+;-----------------------------------------------------------------------------
+; Miniport Common
+;
+[LAN9500.ndi.reg]
+HKR,    ,                         BusNumber,           0, "0" 
+HKR, Ndi,                         Service,             0, "LAN9500"
+HKR, Ndi\Interfaces,              UpperRange,          0, "ndis5"
+HKR, Ndi\Interfaces,              LowerRange,          0, "ethernet"
+
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042495000100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042495000200, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042495050100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042495050200, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\04249E000100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\04249E010100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\0424EC000100, DisableOnSoftRemove, 1, 01, 00
+
+[LAN9500-SAL10.ndi.reg]
+HKR,    ,                         BusNumber,           0, "0" 
+HKR,    ,                         LinkLedOnGpio,       0, "10" 
+HKR, Ndi,                         Service,             0, "LAN9500"
+HKR, Ndi\Interfaces,              UpperRange,          0, "ndis5"
+HKR, Ndi\Interfaces,              LowerRange,          0, "ethernet"
+
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499000100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499000200, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499010100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499010200, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499020100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499030100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499040100, DisableOnSoftRemove, 1, 01, 00
+
+[LAN9500A-HAL.ndi.reg]
+HKR,    ,                         BusNumber,           0, "0" 
+HKR,    ,                         LinkActLedCfg,       0, "1" 
+HKR, Ndi,                         Service,             0, "LAN9500"
+HKR, Ndi\Interfaces,              UpperRange,          0, "ndis5"
+HKR, Ndi\Interfaces,              LowerRange,          0, "ethernet"
+
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499050100, DisableOnSoftRemove, 1, 01, 00
+HKLM, SYSTEM\CurrentControlSet\Control\usbflags\042499060100, DisableOnSoftRemove, 1, 01, 00
+
+[LAN9500.params.reg]
+
+HKR,Ndi\Params\MediaType,ParamDesc,         ,%MediaType%
+HKR,Ndi\Params\MediaType,type,              ,enum
+HKR,Ndi\Params\MediaType,default,           ,0
+HKR,Ndi\Params\MediaType\enum,0,            ,%Auto_All%
+HKR,Ndi\Params\MediaType\enum,1,            ,%Auto_10HD%
+HKR,Ndi\Params\MediaType\enum,2,            ,%Auto_10FD%
+HKR,Ndi\Params\MediaType\enum,3,            ,%Auto_100HD%
+HKR,Ndi\Params\MediaType\enum,4,            ,%Auto_100FD%
+HKR,Ndi\Params\MediaType\enum,5,            ,%Auto_Custom%
+HKR,Ndi\Params\MediaType\enum,6,            ,%Force_10HD%
+HKR,Ndi\Params\MediaType\enum,7,            ,%Force_10FD%
+HKR,Ndi\Params\MediaType\enum,8,            ,%Force_100HD%
+HKR,Ndi\Params\MediaType\enum,9,            ,%Force_100FD%
+
+HKR,Ndi\Params\CustomCapa,ParamDesc,        ,%CustomCapa%
+HKR,Ndi\Params\CustomCapa,type,             ,"word"
+HKR,Ndi\Params\CustomCapa,default,          ,"0x01E1"
+HKR,Ndi\Params\CustomCapa,min,              ,"0"
+HKR,Ndi\Params\CustomCapa,max,              ,"0xFFFF"
+HKR,Ndi\Params\CustomCapa,step,             ,"1"
+HKR,Ndi\Params\CustomCapa,base,             ,"16"
+HKR,Ndi\Params\CustomCapa,optional,         ,1
+
+HKR,Ndi\Params\FlowControl,ParamDesc,       ,%FlowControl%
+HKR,Ndi\Params\FlowControl,type,            ,"enum"
+HKR,Ndi\Params\FlowControl,default,         ,"1"
+HKR,Ndi\Params\FlowControl\enum,"3",        ,%AsymRespond%
+HKR,Ndi\Params\FlowControl\enum,"2",        ,%AsymGenerate%
+HKR,Ndi\Params\FlowControl\enum,"1",        ,%Symmetric%
+HKR,Ndi\Params\FlowControl\enum,"0",        ,%Disabled%
+
+HKR,Ndi\Params\NetworkAddress,ParamDesc,    ,%NetAddr%
+HKR,Ndi\Params\NetworkAddress,type,         ,edit
+HKR,Ndi\Params\NetworkAddress,LimitText,    ,17
+HKR,Ndi\Params\NetworkAddress,UpperCase,    ,1
+HKR,Ndi\Params\NetworkAddress,default,      ,""
+HKR,Ndi\Params\NetworkAddress,optional,     ,1
+
+HKR,Ndi\Params\PriorityVLANTag,ParamDesc,   ,%PriorityAndVlan%
+HKR,Ndi\Params\PriorityVLANTag,type,        ,"enum"
+HKR,Ndi\Params\PriorityVLANTag,default,     ,"3"
+HKR,Ndi\Params\PriorityVLANTag\enum,"3",    ,%PriVlanEnabled%
+HKR,Ndi\Params\PriorityVLANTag\enum,"0",    ,%PriVlanDisabled%
+
+HKR,Ndi\Params\VlanID,ParamDesc,            ,%VlanID%
+HKR,Ndi\Params\VlanID,type,                 ,"word"
+HKR,Ndi\Params\VlanID,default,              ,"0"
+HKR,Ndi\Params\VlanID,min,                  ,"0"
+HKR,Ndi\Params\VlanID,max,                  ,"4095"
+HKR,Ndi\Params\VlanID,step,                 ,"1"
+HKR,Ndi\Params\VlanID,base,                 ,"10"
+
+HKR,Ndi\Params\USBBandwidthMode,ParamDesc,  ,%USBBwMode%
+HKR,Ndi\Params\USBBandwidthMode,type,       ,"enum"
+HKR,Ndi\Params\USBBandwidthMode,default,    ,"2"
+HKR,Ndi\Params\USBBandwidthMode\enum,"0",   ,%USBBwMaxTput%
+HKR,Ndi\Params\USBBandwidthMode\enum,"1",   ,%USBBwFriendly%
+HKR,Ndi\Params\USBBandwidthMode\enum,"2",   ,%USBBwAutomatic%
+
+HKR,Ndi\Params\AutoMdix,ParamDesc,          ,%AutoMdix%
+HKR,Ndi\Params\AutoMdix,type,               ,"enum"
+HKR,Ndi\Params\AutoMdix,default,            ,"3"
+HKR,Ndi\Params\AutoMdix\enum,"3",           ,%AMDIXHwStrap%
+HKR,Ndi\Params\AutoMdix\enum,"2",           ,%AMDIXOn%
+HKR,Ndi\Params\AutoMdix\enum,"1",           ,%AMDIXOff-Swap%
+HKR,Ndi\Params\AutoMdix\enum,"0",           ,%AMDIXOff-Normal%
+
+HKR,Ndi\Params\*WakeOnPattern,ParamDesc,    ,%WakePattern%
+HKR,Ndi\Params\*WakeOnPattern,type,         ,enum
+HKR,Ndi\Params\*WakeOnPattern,default,      ,1
+HKR,Ndi\Params\*WakeOnPattern\enum,0,       ,%WakeDisable%
+HKR,Ndi\Params\*WakeOnPattern\enum,1,       ,%WakeEnable%
+
+HKR,Ndi\Params\*WakeOnMagicPacket,ParamDesc,,%WakeMagicPkt%
+HKR,Ndi\Params\*WakeOnMagicPacket,type,     ,enum
+HKR,Ndi\Params\*WakeOnMagicPacket,default,  ,1
+HKR,Ndi\Params\*WakeOnMagicPacket\enum,0,   ,%WakeDisable%
+HKR,Ndi\Params\*WakeOnMagicPacket\enum,1,   ,%WakeEnable%
+
+HKR,,DrvCmdMode, 0, "2"
+
+[LAN9500Gen1st.params.reg]
+
+HKR,,AutoMdixMode, 0, "0" 
+
+[LAN9500A.params.reg]
+
+HKR,,AutoMdixMode, 0, "2" 
+
+HKR,Ndi\Params\SleepPhyOnLinkDown,ParamDesc,     ,%EDPD%
+HKR,Ndi\Params\SleepPhyOnLinkDown,type,          ,"enum"
+HKR,Ndi\Params\SleepPhyOnLinkDown,default,       ,"0"
+HKR,Ndi\Params\SleepPhyOnLinkDown\enum,"0",      ,%EDPDOFF%
+HKR,Ndi\Params\SleepPhyOnLinkDown\enum,"1",      ,%EDPDON%
+
+HKR,,EDPDConfig, 0, "B000" 
+
+HKR,Ndi\Params\NetDetach,ParamDesc,              ,%NetDetach%
+HKR,Ndi\Params\NetDetach,type,                   ,"enum"
+HKR,Ndi\Params\NetDetach,default,                ,"0"
+HKR,Ndi\Params\NetDetach\enum,"0",               ,%NDModeOFF%
+HKR,Ndi\Params\NetDetach\enum,"1",               ,%NDModeON%
+HKR,Ndi\Params\NetDetach\enum,"2",               ,%NDModeAuto%
+
+HKR,,LinkWakeModes, 0, "80000040" 
+
+[LAN9730.params.reg]
+
+HKR,,AutoMdixMode, 0, "2" 
+
+HKR,Ndi\Params\SleepPhyOnLinkDown,ParamDesc,     ,%EDPD%
+HKR,Ndi\Params\SleepPhyOnLinkDown,type,          ,"enum"
+HKR,Ndi\Params\SleepPhyOnLinkDown,default,       ,"0"
+HKR,Ndi\Params\SleepPhyOnLinkDown\enum,"0",      ,%EDPDOFF%
+HKR,Ndi\Params\SleepPhyOnLinkDown\enum,"1",      ,%EDPDON%
+
+HKR,,EDPDConfig, 0, "B000" 
+
+HKR,,LinkWakeModes, 0, "80000040" 
+
+
+;-----------------------------------------------------------------------------
+; Driver and Service Section
+;
+[LAN9500.CopyFiles.ntx86]
+lan9500-x86-n620f.sys,,,2
+
+[LAN9500.Service.ntx86]
+DisplayName     = %LAN9500.Service.DispName%
+ServiceType     = 1 ;%SERVICE_KERNEL_DRIVER%
+StartType       = 3 ;%SERVICE_DEMAND_START%
+ErrorControl    = 1 ;%SERVICE_ERROR_NORMAL%
+ServiceBinary   = %12%\lan9500-x86-n620f.sys
+LoadOrderGroup  = NDIS
+
+[LAN9500.EventLog.ntx86]
+AddReg = LAN9500.AddEventLog.Reg.ntx86
+
+[LAN9500.AddEventLog.Reg.ntx86]
+HKR, , EventMessageFile, 0x00020000, "%%SystemRoot%%\System32\netevent.dll;%%SystemRoot%%\System32\Drivers\lan9500-x86-n620f.sys"
+HKR, , TypesSupported,   0x00010001, 7
+
+;-----------------------------------------------------------------------------
+; WDF Coinstaller installation section
+;
+[LAN9500.ndi.ntx86.CoInstallers]
+AddReg=LAN9500.CoInstaller.AddReg
+CopyFiles=LAN9500.CoInstaller.CopyFiles
+
+[LAN9500A.ndi.ntx86.CoInstallers]
+AddReg=LAN9500.CoInstaller.AddReg
+CopyFiles=LAN9500.CoInstaller.CopyFiles
+
+[LAN9500-SAL10.ndi.ntx86.CoInstallers]
+AddReg=LAN9500.CoInstaller.AddReg
+CopyFiles=LAN9500.CoInstaller.CopyFiles
+
+[LAN9500A-SAL10.ndi.ntx86.CoInstallers]
+AddReg=LAN9500.CoInstaller.AddReg
+CopyFiles=LAN9500.CoInstaller.CopyFiles
+
+[LAN9500A-HAL.ndi.ntx86.CoInstallers]
+AddReg=LAN9500.CoInstaller.AddReg
+CopyFiles=LAN9500.CoInstaller.CopyFiles
+
+;---
+
+[LAN9500.CoInstaller.AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[LAN9500.CoInstaller.CopyFiles]
+WdfCoInstaller01009.dll
+
+;---
+
+[LAN9500.ndi.ntx86.Wdf]
+KmdfService = LAN9500, LAN9500.wdfsect
+
+[LAN9500A.ndi.ntx86.Wdf]
+KmdfService = LAN9500, LAN9500.wdfsect
+
+[LAN9500-SAL10.ndi.ntx86.Wdf]
+KmdfService = LAN9500, LAN9500.wdfsect
+
+[LAN9500A-SAL10.ndi.ntx86.Wdf]
+KmdfService = LAN9500, LAN9500.wdfsect
+
+[LAN9500A-HAL.ndi.ntx86.Wdf]
+KmdfService = LAN9500, LAN9500.wdfsect
+
+[LAN9500.wdfsect]
+KmdfLibraryVersion = 1.9
+
+;-----------------------------------------------------------------------------
+; Files
+;
+[SourceDisksNames]
+1 = %SMSC_DISK_NAME%,,,""
+
+[SourceDisksFiles]
+lan9500-x86-n620f.sys                       = 1,,
+WdfCoInstaller01009.dll = 1
+
+;-----------------------------------------------------------------------------
+; DestinationDirs
+;
+[DestinationDirs]
+LAN9500.CopyFiles.ntx86 = 12
+LAN9500.CoInstaller.CopyFiles = 11
+
+;-----------------------------------------------------------------------------
+; Localizable Strings
+;
+[Strings]
+V_SMSC="SMSC"
+LAN9500.DeviceDesc          = "LAN9500 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9505.DeviceDesc          = "LAN9505 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9E00.DeviceDesc          = "LAN9500A USB 2.0 to Ethernet 10/100 Adapter"
+LAN9E01.DeviceDesc          = "LAN9505A USB 2.0 to Ethernet 10/100 Adapter"
+LANEC00.DeviceDesc          = "LAN9512/LAN9514 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9900.DeviceDesc          = "LAN9500 USB 2.0 to Ethernet 10/100 Adapter (SAL10)"
+LAN9901.DeviceDesc          = "LAN9505 USB 2.0 to Ethernet 10/100 Adapter (SAL10)"
+LAN9902.DeviceDesc          = "LAN9500A USB 2.0 to Ethernet 10/100 Adapter (SAL10)"
+LAN9903.DeviceDesc          = "LAN9505A USB 2.0 to Ethernet 10/100 Adapter (SAL10)"
+LAN9904.DeviceDesc          = "LAN9512/LAN9514 USB 2.0 to Ethernet 10/100 Adapter (SAL10)"
+LAN9905.DeviceDesc          = "LAN9500A USB 2.0 to Ethernet 10/100 Adapter (HAL)"
+LAN9906.DeviceDesc          = "LAN9505A USB 2.0 to Ethernet 10/100 Adapter (HAL)"
+LAN9E08.DeviceDesc          = "LAN89530 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9E09.DeviceDesc          = "LAN89530 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9730.DeviceDesc          = "LAN9730 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9735.DeviceDesc          = "LAN9730 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9530.DeviceDesc          = "LAN9530 USB 2.0 to Ethernet 10/100 Adapter"
+LAN9535.DeviceDesc          = "LAN9530 USB 2.0 to Ethernet 10/100 Adapter"
+
+
+LAN9500.PackageDesc.ntx86   = "LAN9500 USB 2.0 to Ethernet 10/100 Adapter x86 Driver"
+LAN9500.Service.DispName    = "LAN9500 USB 2.0 to Ethernet 10/100 Adapter Service"
+SMSC_DISK_NAME="LAN9500 USB to Ethernet Driver Files"
+
+;Parameters and values
+MediaType       = "Media Type"
+Auto_All        = "All Modes Autodetected"
+Auto_10HD       = "Autodetect 10HD"
+Auto_10FD       = "Autodetect 10FD"
+Auto_100HD      = "Autodetect 100HD"
+Auto_100FD      = "Autodetect 100FD"
+Auto_Custom     = "Autodetect Custom"
+Force_10HD      = "Force 10HD"
+Force_10FD      = "Force 10FD"
+Force_100HD     = "Force 100HD"
+Force_100FD     = "Force 100FD"
+
+CustomCapa      = "Media Type Custom Capabilities (hex)"
+
+FlowControl     = "Flow Control"
+Disabled        = "Disabled"
+Symmetric       = "Generate and Respond"
+AsymGenerate    = "Generate only"
+AsymRespond     = "Respond only"
+
+NetAddr         = "Network Address"
+
+PriorityAndVlan = "Priority & VLAN"
+PriVlanEnabled  = "Priority & VLAN Enabled"
+PriVlanDisabled = "Priority & VLAN Disabled"
+VlanID          = "VLAN ID"
+
+USBBwMode       = "USB Bandwidth Usage Mode"
+USBBwMaxTput    = "Maximum Throughput"
+USBBwFriendly   = "Sharing Friendly"
+USBBwAutomatic  = "Automatic"
+
+NetDetach       = "NetDetach"
+NDModeOFF       = "Disabled"
+NDModeON        = "Enabled"
+NDModeAuto      = "Automatic"
+
+EDPD            = "Energy Detect Power Down"
+EDPDOFF         = "Disabled"
+EDPDON          = "Enabled"
+
+AutoMdix        = "Auto Mdix"
+AMDIXOn         = "ON"
+AMDIXOff-Swap   = "OFF / Crossed"
+AMDIXOff-Normal = "OFF / Straight"
+AMDIXHwStrap    = "HW Controlled"
+
+AutoMdixMode    = "Auto Mdix Mode"
+AMDIXModeAuto   = "Automatic ON/OFF"
+AMDIXModeOn8023 = "ON with 802.3 timing"
+AMDIXModeOnXtnd = "ON with Extended timing"
+
+WakePattern     = "Wake on pattern match"
+WakeMagicPkt    = "Wake on magic packet"
+WakeDisable     = "Disabled"
+WakeEnable      = "Enabled"

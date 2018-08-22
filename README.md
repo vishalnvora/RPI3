@@ -2,7 +2,7 @@
 # DRIVERS FOR RPI3
 # Since you are trying to install the windows 10 without having correct drivers(perhaps).
 Please check your RPi3  If it has BCM2837 than perhaps you may see the second chipset near to that "SMSC LAN 9514-JZX"
-This one uses the drivers I have uploaded here.
+This one uses the drivers I have uploaded here for the USB and Netowkring combined by manufacturer.
 
 Please refer the correct one for your need ( I am uploading both x86 /x 64) for Windows 8.1 since the windows 10 drivers are not comlied for this chipset.
 I assume that for x86 may be compatible for you reaserch,I am not sure I need to buy one , Which I dont budget it now.
